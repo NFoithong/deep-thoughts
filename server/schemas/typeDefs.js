@@ -6,6 +6,14 @@ const { gql } = require('apollo-server-express');
 // Look Up Thoughts by Username
 // Create and Integrate the Reaction Type
 const typeDefs = gql `
+  type User {
+    _id: ID
+    username: String
+    email: String
+    friendCount: Int
+    thoughts: [Thought]
+    friends: [User]
+  }
 
   type Thought {
     _id: ID
@@ -23,22 +31,17 @@ const typeDefs = gql `
     username: String
   }
 
-  type User {
-    _id: ID
-    username: String
-    email: String
-    friendCount: Int
-    thoughts: [Thought]
-    friends: [User]
-  }
-  
   type Query {
     users: [User]
     user(username: String!): User
     thoughts(username: String): [Thought]
     thought(_id: ID!): Thought
   }
-  
+
+  type Mutation {
+    login(email: String!, password: String!): User
+    addUser(username: String!, email: String!, password: String!): User
+  }
 `;
 
 // export the typeDefs
